@@ -1,0 +1,43 @@
+.win-header {
+    height: 3rem;
+    background-color: $c;
+    color: black;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 .3rem;
+    -webkit-app-region: drag;
+
+    &.-hoverOnly {
+        opacity: 0;
+        -webkit-app-region: no-drag;
+        transition: .5s ease opacity;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.header-fraction {
+    &.-title {
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+    &.-button {
+        -webkit-app-region: no-drag;
+        border-radius: .2rem;
+        padding: .2rem;
+        font-size: 1.5rem;
+
+        &:hover {
+            background-color: #1115;
+        }
+    }
+}
