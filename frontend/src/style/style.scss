@@ -4,6 +4,7 @@ $text: #777;
 
 @import "./helpers.scss";
 @import "./loadBar.scss";
+@import "./s2vegui.scss";
 @import "./header.scss";
 @import "./generics.scss";
 @import "./overview-list.scss";
@@ -72,6 +73,12 @@ body {
     i {
         font-size: 3em;
     }
+}
+
+.iframe-fullscreen {
+    border: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #aside {

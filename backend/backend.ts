@@ -1,9 +1,11 @@
+require("../fetch.js");
 import express from "express";
 import { app, ipcMain, BrowserWindow, dialog } from "electron/main";
 import { join } from "path";
 import { AppWindow } from "./src/winmgr";
 import { SyncFromServer } from "./src/sync/fromServer";
 import { sacn2videoClientserverList } from "./components/sacn2video/sacn2video";
+import { script_startup } from "./scripts/startup";
 
 const expApp = express();
 export let expPort: number = 0;
@@ -25,6 +27,8 @@ app.whenReady().then(main);
 function main() {
     const homeWin = new AppWindow("about:home");
     homeWin.win.maximize();
+
+    script_startup();
 }
 
 ipcMain.handle("open-window", (ev, appName: string, args?: [string, string][]) => {
@@ -40,5 +44,3 @@ ipcMain.handle("open-file", (ev, options) => {
 })
 
 sacn2videoClientserverList;
-
-export let localIP = "10.101.111.1";

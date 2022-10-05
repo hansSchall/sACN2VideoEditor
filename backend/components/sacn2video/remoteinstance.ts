@@ -20,7 +20,13 @@ export class sACN2VideoRemoteInstance extends sACN2VideoInstance {
     getHost(): string {
         return this.server + ":" + this.port;
     }
-    async runSQL(sql: string): Promise<any[]> {
-        return [];
+    async runSQL(sql: string, params: any[]): Promise<any[]> {
+        const url = new URL("http://" + this.getServer() + ":" + this.getPort() + "/api/v3/ext/run-sql?sql=" + encodeURIComponent(sql) + (params?.length ? ("&params=" + encodeURIComponent(JSON.stringify(params))) : ""));
+        console.log("fetch:", url.href);
+        const raw = await (await fetch(url)).text();
+        return JSON.parse(raw);
+    }
+    exit(): void {
+        this.removeItems();
     }
 }

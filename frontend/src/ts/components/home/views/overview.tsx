@@ -26,39 +26,46 @@ export function SACN2VideoServersOverview() {
                     ID: {id}
                 </div>
                 <div className="g-item-line g-flex-line">
-                    <div className="g-button" onClick={() => {
+                    <button className="g-button" onClick={() => {
                         ipc.invoke("open-window", "log:view", [["id", id], ["type", "sacn2video"]])
-                    }}><Bi i="list-columns-reverse" /> {lang.get("logs")}</div>
+                    }}><Bi i="list-columns-reverse" /> {lang.get("logs")}</button>
 
-                    <div className="g-button" onClick={() => {
+                    <button className="g-button" onClick={() => {
                         ipc.invoke("open-window", "s2v:output", [["id", id], ["label", item.label], ["url", item.url]])
-                    }}><Bi i="display" /> {lang.get("view")}</div>
+                    }}><Bi i="display" /> {lang.get("view")}</button>
 
-                    <div className="g-button" onClick={() => {
-                        ipc.invoke("open-window", "s2v:edit:gui", [["id", id]])
-                    }}><Bi i="pencil" /> {lang.get("edit")}</div>
+                    <button className="g-button" onClick={() => {
+                        ipc.invoke("open-window", "s2v:edit:gui", [["id", id], ["label", item.label]])
+                    }}><Bi i="pencil" /> {lang.get("edit")}</button>
 
-                    <div className="g-button" onClick={() => {
-                        ipc.invoke("open-window", "s2v:edit:sql", [["id", id]])
-                    }}><Bi i="search" /> {lang.get("editSql")}</div>
+                    <button className="g-button" onClick={() => {
+                        ipc.invoke("open-window", "s2v:edit:sql", [["id", id], ["label", item.label]])
+                    }}><Bi i="search" /> {lang.get("editSql")}</button>
 
-                    <div className="g-button" onClick={() => {
-                        ipc.invoke("open-window", "s2v:assets", [["id", id]])
-                    }}><Bi i="file-earmark-binary" /> {lang.get("manageAssets")}</div>
+                    <button className="g-button" onClick={() => {
+                        ipc.invoke("open-window", "s2v:assets", [["id", id], ["url", item.url]])
+                    }}><Bi i="file-earmark-binary" /> {lang.get("manageAssets")}</button>
 
-                    <div className="g-button" onClick={() => {
-                        ipc.invoke("restartSacn2VideoServer", [["id", id]])
-                    }}><Bi i="arrow-clockwise" /> {lang.get("reload")}</div>
+                    <button className="g-button" onClick={() => {
+                        ipc.invoke("restartSacn2VideoServer", id)
+                    }}><Bi i="arrow-clockwise" /> {lang.get("reload")}</button>
 
-                    <div className="g-button" onClick={() => {
+                    <button className="g-button" onClick={() => {
                         navigator.clipboard.writeText(item.url)
-                    }}><Bi i="clipboard" /> {lang.get("copyURL")}</div>
+                    }}><Bi i="clipboard" /> {lang.get("copyURL")}</button>
 
-                    <div className="g-button" onClick={() => {
-                        ipc.invoke("stopSacn2VideoServer", [["id", id]])
-                    }}><Bi i="stop-circle" /> {lang.get("stop")}</div>
+                    {
+                        item.remote ?
+                            <button className="g-button" onClick={() => {
+                                ipc.invoke("stopSacn2VideoServer", id)
+                            }}><Bi i="trash-fill" /> {lang.get("Entfernen")}</button>
+                            :
+                            <button className="g-button" onClick={() => {
+                                ipc.invoke("stopSacn2VideoServer", id)
+                            }}><Bi i="stop-circle" /> {lang.get("stop")}</button>
+                    }
                 </div>
-            </div>
+            </div >
         })}
         {/* <div className="g-list-item">
             <div className="g-item-header">right.s2v</div>
@@ -66,12 +73,12 @@ export function SACN2VideoServersOverview() {
                 Port: 81
             </div>
             <div className="g-item-line g-flex-line">
-                <div className="g-button"><Bi i="list-columns-reverse" /> {lang.get("logs")}</div>
-                <div className="g-button"><Bi i="display" /> {lang.get("view")}</div>
-                <div className="g-button"><Bi i="pencil" /> {lang.get("edit")}</div>
-                <div className="g-button"><Bi i="search" /> {lang.get("editSql")}</div>
-                <div className="g-button"><Bi i="clipboard" /> {lang.get("copyURL")}</div>
-                <div className="g-button"><Bi i="stop-circle" /> {lang.get("stop")}</div>
+                <button className="g-button"><Bi i="list-columns-reverse" /> {lang.get("logs")}</div>
+                <button className="g-button"><Bi i="display" /> {lang.get("view")}</div>
+                <button className="g-button"><Bi i="pencil" /> {lang.get("edit")}</div>
+                <button className="g-button"><Bi i="search" /> {lang.get("editSql")}</div>
+                <button className="g-button"><Bi i="clipboard" /> {lang.get("copyURL")}</div>
+                <button className="g-button"><Bi i="stop-circle" /> {lang.get("stop")}</div>
             </div>
         </div>
         <div className="g-list-item">
@@ -80,11 +87,11 @@ export function SACN2VideoServersOverview() {
                 10.101.111.2:82
             </div>
             <div className="g-item-line g-flex-line">
-                <div className="g-button">Logs</div>
-                <div className="g-button">View</div>
-                <div className="g-button -disabled">Edit</div>
-                <div className="g-button">Show URL</div>
-                <div className="g-button -disabled">Stop</div>
+                <button className="g-button">Logs</div>
+                <button className="g-button">View</div>
+                <button className="g-button -disabled">Edit</div>
+                <button className="g-button">Show URL</div>
+                <button className="g-button -disabled">Stop</div>
             </div>
         </div>
         <div className="g-list-item">
@@ -93,20 +100,20 @@ export function SACN2VideoServersOverview() {
                 Port: 83
             </div>
             <div className="g-item-line g-flex-line">
-                <div className="g-button">Logs</div>
-                <div className="g-button">View</div>
-                <div className="g-button">Edit</div>
-                <div className="g-button">Show URL</div>
-                <div className="g-button">Stop</div>
+                <button className="g-button">Logs</div>
+                <button className="g-button">View</div>
+                <button className="g-button">Edit</div>
+                <button className="g-button">Show URL</div>
+                <button className="g-button">Stop</div>
             </div>
         </div> */}
         <div className="g-bottomright-buttons">
-            <div className="g-button" onClick={() => {
+            <button className="g-button" onClick={() => {
                 ipc.invoke("open-window", "s2v:add-server:local")
-            }}><Bi i="plus-lg" /></div>
-            <div className="g-button" onClick={() => {
+            }}><Bi i="plus-lg" /></button>
+            <button className="g-button" onClick={() => {
                 ipc.invoke("open-window", "s2v:add-server:remote")
-            }}><Bi i="hdd-network" /></div>
-        </div>
-    </div>
+            }}><Bi i="hdd-network" /></button>
+        </div >
+    </div >
 }

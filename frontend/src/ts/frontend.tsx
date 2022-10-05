@@ -2,8 +2,10 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Bi } from "./bi";
+import { AddAsset } from "./components/add-asset/add-asset";
 import { AddServer } from "./components/add-server/add-server";
 import { Aside } from "./components/aside/aside";
+import { EditorGUI } from "./components/editor-gui/editor-gui";
 import { EditorSQL } from "./components/editor-sql/editor-sql";
 import { Header } from "./components/global/header";
 import { Home } from "./components/home/home";
@@ -20,7 +22,7 @@ window.addEventListener("load", () => {
 
 const appURL = new URL(location.href);
 function flag(id: string) {
-    return appURL.searchParams.get(id);
+    return appURL.searchParams.get(id) || "";
 }
 
 const flags = {
@@ -30,6 +32,7 @@ const flags = {
     type: flag("type"),
     label: flag("label"),
     url: flag("url"),
+    host: flag("host"),
 }
 
 function App() {
@@ -80,7 +83,9 @@ function App() {
                 <AddServer remote={true} />
             </>
         case "s2v:edit:sql":
-            return <EditorSQL id={flags.id || "none"}></EditorSQL>
+            return <EditorSQL id={flags.id || "none"} host={flags.host || ""} label={flags.label || ""}></EditorSQL>
+        case "s2v:edit:gui":
+            return <EditorGUI id={flags.id || "none"} host={flags.host || ""} label={flags.label || ""}></EditorGUI>
         case "s2v:output":
             return <>
                 <Header title={`sACN2Video Viewer ${flags.label}`} menuIcon={fullscreen ? "fullscreen-exit" : "fullscreen"} showOnHover={fullscreen} onMenu={() => {
@@ -91,10 +96,16 @@ function App() {
                         document.documentElement.requestFullscreen();
                     }
                 }} />
-                <div className={"main" + (fullscreen ? " -fullscreen" : "")}>
-                    {flags.url}
+                <div className={"main" + (fullscreen ? " -fullscreen" : "")} style={{
+                    overflow: "hidden"
+                }}>
+                    <iframe className="iframe-fullscreen" src={flags.url || undefined}></iframe>
+                    {/* {flags.url} */}
                 </div>
             </>
+        case "s2v:assets":
+            return <AddAsset server={flags.url || ""} />;
+
         case "about:settings":
             return <>
                 <Header title={"Einstellungen"} />

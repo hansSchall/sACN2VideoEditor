@@ -12,14 +12,14 @@ export function AddServer(props: { remote: boolean }) {
     return <div className="main g-dialog">
         {/* <div className="g-dialog-h1">{lang.get("addServer")}</div> */}
         <div className="g-input-label">{lang.get("label")}</div>
-        <input className="g-input" value={label} onChange={(ev) => {
+        <input className="g-input" tabIndex={0} value={label} onChange={(ev) => {
             setLabel(ev.target.value);
         }}></input>
 
         {props.remote ? ( // remote
             <>
                 <div className="g-input-label">{lang.get("server")}</div>
-                <input className="g-input" value={server} onChange={(ev) => {
+                <input className="g-input" tabIndex={0} value={server} onChange={(ev) => {
                     const rawVal = ev.target.value;
                     setServer(rawVal.replace(/(\/|:|\\)/g, ""))
                 }} />
@@ -27,13 +27,13 @@ export function AddServer(props: { remote: boolean }) {
         ) : ( // local
             <>
                 <div className="g-input-label">{lang.get("file")}</div>
-                <div className="g-input" onClick={() => {
+                <button className="g-input" tabIndex={0} onClick={() => {
                     ipc.invoke("open-file", {
 
                     }).then(res => {
                         setFile(res.filePaths[0] || file)
                     })
-                }}>{file}</div>
+                }}>{file}</button>
             </>
         )}
 
@@ -41,20 +41,21 @@ export function AddServer(props: { remote: boolean }) {
 
         {props.remote ? null :
             <div className="g-inline">
-                <Switch on={autoPort} onClick={() => setautoPort(!autoPort)} />
-                <div g-inline-label>{lang.get("autoAssignPort")}</div>
+                <Switch on={autoPort} native={{ onClick: () => setautoPort(!autoPort) }} />
+                <div className="g-inline-label">{lang.get("autoAssignPort")}</div>
             </div>
         }
         {portInputDisabled ? null :
             <input
                 className="g-input"
+                tabIndex={0}
                 value={isNaN(port) ? "" : port.toString()}
                 onChange={(ev) => setPort((Math.max(parseInt(ev.target.value), 1)))}
             />
         }
 
         <div className="g-dialog-button-footer">
-            <div className="g-button gt-bt-green" onClick={() => {
+            <button className="g-button gt-bt-green" tabIndex={0} onClick={() => {
                 if (props.remote) {
                     ipc.invoke("add-remote-server", {
                         label,
@@ -72,10 +73,10 @@ export function AddServer(props: { remote: boolean }) {
                         ipc.invoke("close-win");
                     })
                 }
-            }}>{lang.get("add")}</div>
-            <div className="g-button gt-bt-red" onClick={() => {
+            }}>{lang.get("add")}</button>
+            <button className="g-button gt-bt-red" tabIndex={0} onClick={() => {
                 ipc.invoke("close-win");
-            }}>{lang.get("cancel")}</div>
-        </div>
-    </div>
+            }}>{lang.get("cancel")}</button>
+        </div >
+    </div >
 }

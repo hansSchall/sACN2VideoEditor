@@ -20,6 +20,10 @@
     background-color: #090909;
     background-color: #111;
     margin-bottom: 1rem;
+
+    &:focus {
+        outline: .3rem solid #222;
+    }
 }
 
 .g-item-header {
@@ -66,6 +70,9 @@
     border-radius: .3rem;
     min-height: 2rem;
     user-select: none;
+    border: none;
+    font-size: 1rem;
+    color: currentColor;
 
     &:hover:not(.-disabled) {
         background-color: #222;
@@ -156,6 +163,15 @@
     }
 }
 
+.g-button:focus {
+    outline: .2rem solid #444;
+    // font-weight: bold;
+}
+
+.g-input:focus {
+    outline: .1rem solid $c;
+}
+
 @mixin gt-bt($a, $b) {
     background-color: $a;
     color: black;
@@ -168,10 +184,18 @@
 
 .gt-bt-green {
     @include gt-bt($c, $cc);
+
+    &:focus {
+        outline-color: $c;
+    }
 }
 
 .gt-bt-red {
     @include gt-bt(#f33f1f, #c53117);
+
+    &:focus {
+        outline-color: #f33f1f;
+    }
 }
 
 

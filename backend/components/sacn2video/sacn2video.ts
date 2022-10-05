@@ -13,7 +13,7 @@ export abstract class sACN2VideoInstance {
     updateClientItem() {
         sacn2videoClientserverList.set(this.id, {
             label: this.getLabel(),
-            remote: true,
+            remote: this instanceof sACN2VideoRemoteInstance,
             server: this.getServer(),
             port: this.getPort(),
             file: this.getFile(),
@@ -21,12 +21,18 @@ export abstract class sACN2VideoInstance {
         })
     }
 
-    abstract runSQL(sql: string): Promise<any[]>;
+    abstract runSQL(sql: string, params: any[]): Promise<any[]>;
     abstract getHost(): string;
     abstract getServer(): string;
     abstract getPort(): number;
     abstract getFile(): string;
     abstract getLabel(): string;
+    abstract exit(): void;
+
+    protected removeItems() {
+        sacn2videoClientserverList.delete(this.id);
+        sacn2videoServers.delete(this.id);
+    }
 
     getURL(): string {
         return "http://" + this.getHost() + "/";
@@ -65,16 +71,20 @@ ipcMain.handle("add-remote-server", (ev, options: {
     new sACN2VideoRemoteInstance(options.server, options.port, options.label);
 })
 
-ipcMain.handle("run-sql", (ev, id: string, query: string) => {
+ipcMain.handle("run-sql", (ev, id: string, query: string, params: any[]) => {
     const server = sacn2videoServers.get(id);
     if (server) {
-        return server.runSQL(query);
+        return server.runSQL(query, params);
     } else {
         throw new Error("Server not found");
     }
 })
 
-
-
-new sACN2VideoLocalInstance("c:/hans/technik/theater2022/right.s2v", 8001, "Right")
-new sACN2VideoRemoteInstance("10.101.111.2", 8001, "Right")
+ipcMain.handle("stopSacn2VideoServer", (ev, id: string) => {
+    const server = sacn2videoServers.get(id);
+    if (server) {
+        return server.exit();
+    } else {
+        throw new Error("Server not found");
+    }
+})
