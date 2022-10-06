@@ -57,8 +57,19 @@ export function EditorGUI({ id: serverID, label: winLabel }: {
 
     if (element) {
         if (prop) {
-            // ########################## Prop Edit ##########################
-            return <EditProp {...stdProps} />
+            if (editMode == EditMode.DELETE) {
+                // ########################## Prop DELETE ##########################
+                return <ConfirmDelete {...stdProps} cancel={() => {
+                    setEditMode(EditMode.VIEW);
+                }} delete={async () => {
+                    await runSQL("DELETE FROM elProps WHERE el = ? AND prop = ?", serverID, [element, prop]);
+                    setEditMode(EditMode.VIEW);
+                    setProp(null);
+                }} label={"Eigenschaft '" + prop + "'"} />
+            } else {
+                // ########################## Prop Edit ##########################
+                return <EditProp {...stdProps} />
+            }
         } else {
             if (editMode == EditMode.INSERT) {
                 // ########################## Add Prop ##########################

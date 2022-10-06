@@ -44,6 +44,9 @@ export function EditProp(props: EGUIStdProps) {
             <div className="g-dialog-button-footer">
                 <button className="g-button gt-bt-green" tabIndex={0} onClick={apply}>OK</button>
                 <button className="g-button gt-bt-red" tabIndex={0} onClick={cancel}>{lang.get("cancel")}</button>
+                <button className="g-button gt-bt-red" tabIndex={0} onClick={() => {
+                    props.setEditMode(EditMode.DELETE);
+                }}>Löschen</button>
             </div>
         </div >
     </>
