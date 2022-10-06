@@ -24,6 +24,10 @@ const server = expApp.listen(() => {
 
 app.whenReady().then(main);
 
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit()
+})
+
 function main() {
     const homeWin = new AppWindow("about:home");
     homeWin.win.maximize();
