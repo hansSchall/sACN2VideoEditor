@@ -1,6 +1,10 @@
 import { resolve } from "path";
+import { buildConfig, isBuild } from "./build.config";
+import { devConfig } from "./dev.config";
 
-export const config = {
-    sacn2videoServer: resolve("c:/hans/ts/sacn2video/server/server.js"),
-    localIP: "10.101.111.1",
+export interface ConfigOptions {
+    sacn2videoServer: string,
+    localIP: string,
 }
+
+export const config = isBuild ? buildConfig : devConfig;
