@@ -47,7 +47,8 @@ export function SACN2VideoServersOverview() {
                     }}><Bi i="file-earmark-binary" /> {lang.get("manageAssets")}</button>
 
                     <button className="g-button" onClick={() => {
-                        ipc.invoke("restartSacn2VideoServer", id)
+                        // ipc.invoke("restartSacn2VideoServer", id)
+                        fetch(`${item.url}api/v3/ext/reload`);
                     }}><Bi i="arrow-clockwise" /> {lang.get("reload")}</button>
 
                     <button className="g-button" onClick={() => {
